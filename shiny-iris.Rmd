@@ -1,0 +1,66 @@
+In this notebook, we will be creating an interactive dashboard using the Shiny library and the *iris* dataset from the R "datasets" package.
+
+Let's start by installing and loading the necessary libraries: Shiny and datasets. You can do this by running the following code:
+
+
+```{r}
+library(shiny)
+library(datasets)
+```
+
+Next, we will use the iris dataset from the datasets package.
+
+```{r}
+data("iris")
+```
+
+
+Now, let's define the user interface for the dashboard. We will create a select input for the user to choose a variable and a histogram to display the selected variable. Run the following code to define the UI:
+
+
+```{r}
+ui <- fluidPage(
+  # Create a select input for the user to choose a variable
+  selectInput("variable", "Variable:",
+              choices = c("Sepal.Length" = "Sepal.Length",
+                         "Sepal.Width" = "Sepal.Width",
+                         "Petal.Length" = "Petal.Length",
+                         "Petal.Width" = "Petal.Width",
+                         "Species" = "Species")),
+  # Create a histogram to display the selected variable
+  plotOutput("histogram")
+)
+```
+
+Let's define the server logic for the dashboard. We will create a reactive object that returns the selected variable and use it to create the histogram of the selected variable. Run the following code to define the server:
+
+```{r}
+server <- function(input, output) {
+  # Create a reactive object that returns the selected variable
+  variable <- reactive({
+    iris[, input$variable]
+  })
+    # Create the histogram with the selected variable
+  output$histogram <- renderPlot({
+    hist(variable(), main = input$variable)
+  })
+}
+```
+
+
+
+Finally, we will create the dashboard by running the following code:
+
+
+
+```{r}
+# Run the code below to execute and create the dashboard
+shinyApp(ui, server)
+
+```
+
+Now, you can run the above code cells in order, and you will have your interactive dashboard. You can select a variable from the dataset and see the histogram for that variable.
+
+Keep in mind that the above code will only run on your computational environment.
+
+That's it! You've just created an interactive dashboard with R and Shiny. I hope you found this notebook helpful. Feel free to experiment with the code and customize it to suit your needs.
